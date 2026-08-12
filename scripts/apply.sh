@@ -65,6 +65,16 @@ if os.path.isfile(path) and os.path.getsize(path):
         # Never clobber a config we failed to understand.
         sys.exit(f"    ERROR: existing ventoy.json is not valid JSON ({e}). Fix or move it first.")
 
+# Ventoy defaults to ListMode, which flattens every ISO into one list and
+# ignores how you organised the drive. TreeMode makes directories browsable
+# submenus instead. Only set when absent, so a deliberate choice is kept.
+control = d.get("control", [])
+have_ctl = {k for e in control if isinstance(e, dict) for k in e}
+for k, v in (("VTOY_DEFAULT_MENU_MODE", "1"), ("VTOY_TREE_VIEW_MENU_STYLE", "1")):
+    if k not in have_ctl:
+        control.append({k: v})
+d["control"] = control
+
 d["theme"] = {
     "file": "/ventoy/theme/penguinvault/theme.txt",
     "gfxmode": "max",
@@ -102,7 +112,10 @@ for key, cls in rules:
 d["menu_class"] = existing
 
 json.dump(d, open(path, "w"), indent=4)
-print(f"    theme plugin set, {len(d['menu_class'])} menu_class rules")
+mode = next((e.get("VTOY_DEFAULT_MENU_MODE") for e in control
+             if isinstance(e, dict) and "VTOY_DEFAULT_MENU_MODE" in e), "0")
+print(f"    theme plugin set, {len(d['menu_class'])} menu_class rules, "
+      f"menu mode {'TreeMode (folders)' if mode == '1' else 'ListMode (flat)'}")
 PYEOF
 
 if [[ "$DO_LABEL" == "--label" ]]; then

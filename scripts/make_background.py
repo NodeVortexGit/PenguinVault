@@ -81,38 +81,58 @@ for ang in range(0, 360, 45):
 glow(vault, 3, 0.5)
 d = ImageDraw.Draw(img)
 
-# Penguin mark, bottom-right: simple geometric silhouette, understated.
+# Penguin mark, bottom-right — Tux's colours: black body, white front,
+# orange beak and feet. Drawn on its own RGBA layer so the black body stays
+# black instead of being lifted by the glow passes underneath it.
+TUX_BLACK = (14, 14, 16, 255)
+TUX_WHITE = (247, 247, 244, 255)
+TUX_ORANGE = (247, 168, 27, 255)
+
 px, py, s = int(W * 0.895), int(H * 0.80), H * 0.115
-body = [
-    (px, py - s),
-    (px + s * 0.42, py - s * 0.45),
-    (px + s * 0.46, py + s * 0.35),
-    (px + s * 0.30, py + s * 0.62),
-    (px - s * 0.30, py + s * 0.62),
-    (px - s * 0.46, py + s * 0.35),
-    (px - s * 0.42, py - s * 0.45),
-]
-d.polygon(body, fill=(9, 17, 28))
-d.polygon(
+tux = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+td = ImageDraw.Draw(tux)
+
+# Body.
+td.polygon(
     [
-        (px, py - s * 0.72),
-        (px + s * 0.28, py - s * 0.20),
-        (px + s * 0.30, py + s * 0.34),
-        (px, py + s * 0.50),
-        (px - s * 0.30, py + s * 0.34),
-        (px - s * 0.28, py - s * 0.20),
+        (px, py - s),
+        (px + s * 0.42, py - s * 0.45),
+        (px + s * 0.46, py + s * 0.35),
+        (px + s * 0.30, py + s * 0.62),
+        (px - s * 0.30, py + s * 0.62),
+        (px - s * 0.46, py + s * 0.35),
+        (px - s * 0.42, py - s * 0.45),
     ],
-    fill=(22, 40, 60),
+    fill=TUX_BLACK,
 )
-# Eyes + beak.
-d.ellipse([px - s * 0.20, py - s * 0.62, px - s * 0.06, py - s * 0.44], fill=(200, 226, 240))
-d.ellipse([px + s * 0.06, py - s * 0.62, px + s * 0.20, py - s * 0.44], fill=(200, 226, 240))
-d.ellipse([px - s * 0.16, py - s * 0.58, px - s * 0.10, py - s * 0.50], fill=(6, 12, 20))
-d.ellipse([px + s * 0.10, py - s * 0.58, px + s * 0.16, py - s * 0.50], fill=(6, 12, 20))
-d.polygon([(px - s * 0.09, py - s * 0.40), (px + s * 0.09, py - s * 0.40), (px, py - s * 0.26)], fill=AMBER)
+# White front.
+td.polygon(
+    [
+        (px, py - s * 0.66),
+        (px + s * 0.30, py - s * 0.16),
+        (px + s * 0.32, py + s * 0.34),
+        (px, py + s * 0.52),
+        (px - s * 0.32, py + s * 0.34),
+        (px - s * 0.30, py - s * 0.16),
+    ],
+    fill=TUX_WHITE,
+)
+# White face patch, so the eyes sit on white rather than black.
+td.ellipse([px - s * 0.30, py - s * 0.80, px + s * 0.30, py - s * 0.30], fill=TUX_WHITE)
+# Eyes.
+td.ellipse([px - s * 0.19, py - s * 0.66, px - s * 0.05, py - s * 0.48], fill=TUX_BLACK)
+td.ellipse([px + s * 0.05, py - s * 0.66, px + s * 0.19, py - s * 0.48], fill=TUX_BLACK)
+# Beak.
+td.polygon([(px - s * 0.11, py - s * 0.42), (px + s * 0.11, py - s * 0.42), (px, py - s * 0.24)],
+           fill=TUX_ORANGE)
 # Feet.
-d.polygon([(px - s * 0.26, py + s * 0.62), (px - s * 0.02, py + s * 0.62), (px - s * 0.14, py + s * 0.74)], fill=AMBER)
-d.polygon([(px + s * 0.02, py + s * 0.62), (px + s * 0.26, py + s * 0.62), (px + s * 0.14, py + s * 0.74)], fill=AMBER)
+td.polygon([(px - s * 0.28, py + s * 0.60), (px - s * 0.02, py + s * 0.60), (px - s * 0.15, py + s * 0.76)],
+           fill=TUX_ORANGE)
+td.polygon([(px + s * 0.02, py + s * 0.60), (px + s * 0.28, py + s * 0.60), (px + s * 0.15, py + s * 0.76)],
+           fill=TUX_ORANGE)
+
+# NB: not composited yet — the vignette below would grey down Tux's white
+# front, since he sits near the darkened right edge. He goes on last.
 
 # Thin ice rule dividing the wordmark block from the menu. Sits at 19.5%:
 # below the subtitle (theme.txt puts it at 15%) and above the first menu
@@ -126,6 +146,9 @@ vd2 = ImageDraw.Draw(vig)
 vd2.ellipse([-int(W * 0.45), -int(H * 0.60), int(W * 1.45), int(H * 1.60)], fill=255)
 vig = vig.filter(ImageFilter.GaussianBlur(220))
 img = Image.composite(img, Image.eval(img, lambda v: int(v * 0.55)), vig)
+
+# Tux goes on after the vignette so his white front stays white.
+img = Image.alpha_composite(img.convert("RGBA"), tux).convert("RGB")
 
 img.save(OUT, "PNG", optimize=True)
 print(f"wrote {OUT} ({W}x{H})")

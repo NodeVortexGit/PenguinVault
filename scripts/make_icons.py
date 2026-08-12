@@ -151,12 +151,35 @@ def server_stack(d, col=INK):
         d.rounded_rectangle([C - w / 2, y, C + w / 2, y + h], radius=h * 0.3, fill=col)
 
 
-def penguin(d, col=INK):
+TUX_BLACK = (14, 14, 16, 255)
+TUX_WHITE = (247, 247, 244, 255)
+TUX_ORANGE = (247, 168, 27, 255)
+
+
+def penguin(d, col=None):
+    """Tux: black body, white front and face, orange beak and feet.
+
+    Drawn on the light tile defined in ICONS — a black penguin on the dark
+    tiles the other icons use would be a silhouette of nothing.
+    """
     s = S * SS * 0.30
-    d.ellipse([C - s * 0.72, C - s, C + s * 0.72, C + s], fill=col)
-    d.ellipse([C - s * 0.44, C - s * 0.42, C + s * 0.44, C + s * 0.86], fill=(20, 34, 52, 255))
-    d.polygon([(C - s * 0.16, C - s * 0.38), (C + s * 0.16, C - s * 0.38), (C, C - s * 0.10)],
-              fill=(255, 183, 3, 255))
+    # Body.
+    d.ellipse([C - s * 0.74, C - s * 0.98, C + s * 0.74, C + s * 0.92], fill=TUX_BLACK)
+    # White front.
+    d.ellipse([C - s * 0.46, C - s * 0.30, C + s * 0.46, C + s * 0.86], fill=TUX_WHITE)
+    # White face.
+    d.ellipse([C - s * 0.44, C - s * 0.80, C + s * 0.44, C - s * 0.16], fill=TUX_WHITE)
+    # Eyes.
+    d.ellipse([C - s * 0.26, C - s * 0.66, C - s * 0.08, C - s * 0.42], fill=TUX_BLACK)
+    d.ellipse([C + s * 0.08, C - s * 0.66, C + s * 0.26, C - s * 0.42], fill=TUX_BLACK)
+    # Beak.
+    d.polygon([(C - s * 0.17, C - s * 0.36), (C + s * 0.17, C - s * 0.36), (C, C - s * 0.10)],
+              fill=TUX_ORANGE)
+    # Feet.
+    d.polygon([(C - s * 0.50, C + s * 0.86), (C - s * 0.06, C + s * 0.86), (C - s * 0.28, C + s * 1.10)],
+              fill=TUX_ORANGE)
+    d.polygon([(C + s * 0.06, C + s * 0.86), (C + s * 0.50, C + s * 0.86), (C + s * 0.28, C + s * 1.10)],
+              fill=TUX_ORANGE)
 
 
 def cat_ears(d, col=INK):
@@ -228,9 +251,10 @@ ICONS = {
     "nyarch":        ((203, 116, 190), cat_ears),
     "veloguard":     ((45, 106, 120),  shield),
     "security":      ((45, 106, 120),  shield),
-    "linux":         ((38, 52, 70),    penguin),
+    # Tux tiles are light so the black body reads; the rest stay dark.
+    "linux":         ((226, 234, 241), penguin),
     "vtoyret":       ((38, 52, 70),    circle_o),
-    "unknown":       ((38, 52, 70),    penguin),
+    "unknown":       ((226, 234, 241), penguin),
     "penguinvault":  ((13, 27, 42),    vault_lock),
 }
 

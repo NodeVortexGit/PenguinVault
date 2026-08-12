@@ -34,18 +34,16 @@ def font(path, size):
         return ImageFont.load_default()
 
 
-# Menu entries: (label, icon class). Mirrors a real drive's contents.
+# Menu entries: (label, icon class). TreeMode shows directories as browsable
+# submenus, so the top level is folders — this mirrors that.
 ENTRIES = [
-    ("archlinux-2026.08.01-x86_64.iso", "arch"),
-    ("debian-13.6.0-amd64-netinst.iso", "debian"),
-    ("Fedora-Workstation-Live-44-1.7.x86_64.iso", "fedora"),
-    ("ubuntu-26.04-desktop-amd64.iso", "ubuntu"),
-    ("linuxmint-22.3-cinnamon-64bit.iso", "mint"),
-    ("kali-linux-2026.2-installer-amd64.iso", "kali"),
-    ("blackarch-linux-full-2023.04.01-x86_64.iso", "blackarch"),
-    ("Qubes-R4.3.1-x86_64.iso", "qubes"),
-    ("nixos-graphical-26.05-x86_64-linux.iso", "nixos"),
-    ("proxmox-ve_9.2-1.iso", "proxmox"),
+    ("easy for begginers/", "dir"),
+    ("for metsure linux users/", "dir"),
+    ("security focused distros/", "dir"),
+    ("server focused distros/", "dir"),
+    ("Strange distros/", "dir"),
+    ("the trio of linux/", "dir"),
+    ("vonarability search focused distros/", "dir"),
     ("Win11_25H2_English_x64_v2.iso", "windows"),
 ]
 SELECTED = 5
@@ -78,10 +76,20 @@ for i, (label, cls) in enumerate(ENTRIES):
     if selected:
         d.rounded_rectangle([left - 10, y - 4, left + W * 0.58, y + item_h + 2],
                             radius=6, fill=(20, 40, 62))
-    ipath = os.path.join(THEME, "icons", f"{cls}.png")
-    if os.path.isfile(ipath):
-        ic = Image.open(ipath).convert("RGBA").resize((icon_sz, icon_sz), Image.LANCZOS)
-        img.paste(ic, (int(left), int(y + (item_h - icon_sz) / 2)), ic)
+    iy = int(y + (item_h - icon_sz) / 2)
+    if cls == "dir":
+        # Folder glyph, drawn rather than shipped — GRUB renders directories
+        # with its own built-in folder icon in TreeMode.
+        fx = int(left)
+        d.rounded_rectangle([fx, iy + 6, fx + icon_sz, iy + icon_sz - 1], radius=3,
+                            fill="#3f6d8c" if not selected else "#a9762a")
+        d.rounded_rectangle([fx, iy + 1, fx + int(icon_sz * 0.45), iy + 10], radius=2,
+                            fill="#4f83a5" if not selected else "#c4892f")
+    else:
+        ipath = os.path.join(THEME, "icons", f"{cls}.png")
+        if os.path.isfile(ipath):
+            ic = Image.open(ipath).convert("RGBA").resize((icon_sz, icon_sz), Image.LANCZOS)
+            img.paste(ic, (int(left), iy), ic)
     d.text((left + icon_sz + icon_gap, y + item_h / 2), label,
            font=f_item, fill=SEL if selected else ITEM, anchor="lm")
 
