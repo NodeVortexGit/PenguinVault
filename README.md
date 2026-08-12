@@ -1,7 +1,7 @@
 # PenguinVault
 
 A themed [Ventoy](https://www.ventoy.net/) build: dark polar-night boot menu,
-per-distro icons, a `PenguinVault` volume label instead of the default
+per-distro icons, a PenguinVault volume label instead of the default
 `Ventoy`, and scripts to keep the ISOs on the drive from quietly rotting.
 
 Ventoy does the booting. PenguinVault is the paint, the icons, and the
@@ -32,12 +32,19 @@ Installs the theme and wires up the icon rules. Your ISOs, persistence
 config, and any other `ventoy.json` settings are merged, not overwritten —
 re-running is safe and produces no duplicates.
 
-To also rename the volume from `Ventoy` to `PenguinVault` (needs root,
-because relabelling requires the volume unmounted):
+To also rename the volume (needs root, because relabelling requires the
+volume unmounted):
 
 ```sh
 sudo ./scripts/apply.sh /run/media/$USER/Ventoy --label
 ```
+
+> **On the label:** exFAT and FAT cap volume labels at **11 characters**, and
+> `PenguinVault` is 12. On a stock Ventoy drive (exFAT) the volume is
+> therefore labelled **`PenguinVlt`**; only NTFS, which allows 32, gets the
+> full `PenguinVault`. This affects nothing but the name your file manager
+> shows — the boot menu reads "PenguinVault" either way, because that text
+> comes from the theme rather than the volume label.
 
 ### Build a fresh drive
 

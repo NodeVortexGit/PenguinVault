@@ -14,7 +14,10 @@
 set -euo pipefail
 
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-LABEL="PenguinVault"
+# Ventoy formats the main partition as exFAT, whose volume labels are capped
+# at 11 characters — "PenguinVault" is 12 and would be rejected. The boot menu
+# still reads "PenguinVault"; that text comes from the theme, not the label.
+LABEL="PenguinVlt"
 DEV="${1:-}"
 shift || true
 PART_STYLE=""

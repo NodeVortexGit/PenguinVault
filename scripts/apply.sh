@@ -16,7 +16,13 @@ MP="${1:-}"
 DO_LABEL="${2:-}"
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 SRC="$HERE/theme/penguinvault"
-LABEL="PenguinVault"
+
+# exFAT and FAT cap volume labels at 11 characters, and "PenguinVault" is 12,
+# so those filesystems get the abbreviated form. NTFS allows 32 and gets the
+# full name. This only affects the label your file manager shows — the boot
+# menu says "PenguinVault" either way, since that text comes from the theme.
+LABEL_FULL="PenguinVault"
+LABEL_SHORT="PenguinVlt"
 
 if [[ -z "$MP" || ! -d "$MP" ]]; then
 	echo "Usage: $0 /path/to/ventoy-mountpoint [--label]" >&2
@@ -100,23 +106,41 @@ print(f"    theme plugin set, {len(d['menu_class'])} menu_class rules")
 PYEOF
 
 if [[ "$DO_LABEL" == "--label" ]]; then
-	echo "==> Renaming volume label to $LABEL"
 	dev=$(findmnt -no SOURCE --target "$MP")
-	echo "    device: $dev"
+	fstype=$(findmnt -no FSTYPE --target "$MP")
 	if [[ $EUID -ne 0 ]]; then
-		echo "    ERROR: --label needs root (relabelling requires the volume unmounted)." >&2
+		echo "==> ERROR: --label needs root (relabelling requires the volume unmounted)." >&2
 		echo "    Re-run as: sudo $0 $MP --label" >&2
 		exit 1
 	fi
-	fstype=$(findmnt -no FSTYPE --target "$MP")
+
+	case "$fstype" in
+		exfat|vfat) label="$LABEL_SHORT" ;;
+		ntfs)       label="$LABEL_FULL" ;;
+		*) echo "==> ERROR: don't know how to relabel $fstype" >&2; exit 1 ;;
+	esac
+	echo "==> Renaming volume label to $label"
+	echo "    device: $dev ($fstype)"
+	if [[ "$label" != "$LABEL_FULL" ]]; then
+		echo "    ($fstype caps labels at 11 chars, so '$LABEL_FULL' won't fit;"
+		echo "     the boot menu still reads '$LABEL_FULL')"
+	fi
+
 	sync
 	umount "$MP"
+	# Put the drive back the way we found it if the rename fails, rather than
+	# leaving it unmounted with no explanation.
+	relabel_ok=1
 	case "$fstype" in
-		exfat) exfatlabel "$dev" "$LABEL" ;;
-		vfat)  fatlabel   "$dev" "$LABEL" ;;
-		ntfs)  ntfslabel --force "$dev" "$LABEL" ;;
-		*) echo "    ERROR: don't know how to relabel $fstype" >&2; exit 1 ;;
+		exfat) exfatlabel "$dev" "$label" >/dev/null && relabel_ok=0 || true ;;
+		vfat)  fatlabel   "$dev" "$label" >/dev/null && relabel_ok=0 || true ;;
+		ntfs)  ntfslabel --force "$dev" "$label" >/dev/null && relabel_ok=0 || true ;;
 	esac
+	if (( relabel_ok != 0 )); then
+		echo "    ERROR: relabelling $dev failed; drive left unmounted." >&2
+		echo "    Remount with: udisksctl mount -b $dev" >&2
+		exit 1
+	fi
 	echo "    relabelled ($fstype)"
 else
 	echo "==> Skipping volume rename (pass --label as root to also rename it)"
