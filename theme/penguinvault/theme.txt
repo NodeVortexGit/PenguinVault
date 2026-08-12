@@ -1,0 +1,104 @@
+# PenguinVault — GRUB2 theme for Ventoy
+#
+# Deliberately self-contained: the only external asset is background.png,
+# which ships alongside this file. No pixmap styles are referenced, so a
+# missing image can never leave the menu unrenderable — GRUB falls back to
+# the flat colours below.
+#
+# Icons are looked up as icons/<menu class>.png relative to this file.
+# Ventoy derives that class from the ISO filename, or from a menu_class
+# rule in ventoy.json.
+
+desktop-image: "background.png"
+desktop-color: "#0a1422"
+
+title-text: ""
+title-font: "PV Title Bold 32"
+title-color: "#e8f0f7"
+
+message-font: "PV Item Regular 20"
+message-color: "#c9d6e2"
+message-bg-color: "#0d1b2a"
+
+terminal-font: "PV Small Regular 16"
+terminal-border: "0"
+terminal-left: "12%"
+terminal-top: "18%"
+terminal-width: "76%"
+terminal-height: "64%"
+
+# ── Wordmark ────────────────────────────────────────────────────────────────
++ label {
+    left     = 6%
+    top      = 7%
+    width    = 50%
+    text     = "PenguinVault"
+    font     = "PV Title Bold 32"
+    color    = "#7fdfff"
+    align    = "left"
+}
+
++ label {
+    left     = 6%
+    top      = 15%
+    width    = 50%
+    text     = "multiboot rescue + install vault"
+    font     = "PV Small Regular 16"
+    color    = "#6d8ba3"
+    align    = "left"
+}
+
+# ── Boot menu ───────────────────────────────────────────────────────────────
++ boot_menu {
+    left                = 6%
+    top                 = 23%
+    width               = 58%
+    height              = 58%
+
+    item_font           = "PV Item Regular 20"
+    item_color          = "#c9d6e2"
+    selected_item_color = "#ffb703"
+
+    item_height         = 38
+    item_padding        = 4
+    item_spacing        = 8
+
+    icon_width          = 32
+    icon_height         = 32
+    item_icon_space     = 18
+
+    # No scrollbar_frame/thumb pixmaps are shipped, so the scrollbar is left
+    # off rather than pointing at images that don't exist.
+    scrollbar           = false
+}
+
+# ── Countdown ───────────────────────────────────────────────────────────────
++ progress_bar {
+    id       = "__timeout__"
+    left     = 6%
+    top      = 85%
+    width    = 58%
+    height   = 14
+    show_text = true
+    text     = "@TIMEOUT_NOTIFICATION_SHORT@"
+    font     = "PV Small Regular 16"
+    text_color = "#6d8ba3"
+    fg_color = "#48cae4"
+    bg_color = "#12263a"
+    border_color = "#1d3a52"
+}
+
+# ── Hotkey hints ────────────────────────────────────────────────────────────
++ hbox {
+    left = 6%
+    top  = 92%
+    + label { text = "F1 memdisk   F2 power   F3 tree   F4 local disk   F5 tools   F6 submenu   Ctrl+w quit" font = "PV Small Regular 16" color = "#4f6a80" align = "left" }
+}
+
+# Ventoy status line (memdisk / persistence / injection indicators)
++ hbox {
+    left  = 68%
+    top   = 92%
+    width = 28%
+    + label { text = "@VTOY_MEM_DISK@" font = "PV Small Regular 16" color = "#ffb703" align = "left" }
+}
