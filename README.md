@@ -44,11 +44,20 @@ sudo ./scripts/apply.sh /run/media/$USER/Ventoy --label
 ```
 
 > **On the label:** exFAT and FAT cap volume labels at **11 characters**, and
-> `PenguinVault` is 12. On a stock Ventoy drive (exFAT) the volume is
-> therefore labelled **`PenguinVlt`**; only NTFS, which allows 32, gets the
-> full `PenguinVault`. This affects nothing but the name your file manager
-> shows — the boot menu reads "PenguinVault" either way, because that text
-> comes from the theme rather than the volume label.
+> `PenguinVault` is 12 — so on a stock Ventoy drive (exFAT) the volume can
+> only be labelled `PenguinVlt`. **NTFS** allows 32 characters and gets the
+> full `PenguinVault`; `apply.sh --label` picks the right one automatically
+> from the filesystem it finds.
+>
+> Ventoy supports NTFS for the data partition, and Linux reads and writes it
+> through the in-kernel `ntfs3` driver, so reformatting is a legitimate way
+> to get the full name — but it destroys the partition, so everything has to
+> be copied off and back. `scripts/convert-to-ntfs.sh` does that with
+> checksum verification at both ends.
+>
+> Either way this only affects the name your file manager shows. The boot
+> menu reads "PenguinVault" regardless, because that text comes from the
+> theme rather than the volume label.
 
 ### Build a fresh drive
 
@@ -113,6 +122,37 @@ copies of their logos: they stay readable at 32px, they share one visual
 language so the menu looks designed rather than assembled, and nothing here
 redistributes anyone's trademarked artwork. Adding one is a line in
 `ICONS` in `make_icons.py` and a rule in `apply.sh`.
+
+## Gaming images
+
+The gaming builds are all the **AMD/Intel** variants — the plain images with
+open drivers, not the vendor-driver spins. Proprietary NVIDIA drivers can be
+layered on after install if you need them.
+
+| | Image | Notes |
+|---|---|---|
+| CachyOS | `cachyos-desktop-linux-*.iso` | Performance-tuned Arch; dated snapshots, SHA256 published |
+| PikaOS | `PikaOS-Nest-KDE-*-amd64-*.iso` | Nest 4.0, KDE, the non-NVIDIA build |
+| Bazzite | `bazzite-stable-amd64.iso` | Fedora Atomic; the plain AMD/Intel KDE image, not `-nvidia` |
+| SteamOS | `SteamOS.img` | See below — not an ISO |
+
+`scripts/fetch-steamos.sh` exists because SteamOS is genuinely awkward:
+
+- Valve publishes no ISO. The download is a raw disk image,
+  `steamdeck-repair-latest.img.bz2`, meant to be flashed with Rufus/Etcher.
+  Since **SteamOS 3.8** (June 2026) that same image also installs on generic
+  PCs, provided you have an **AMD GPU** — NVIDIA support is slated for 2027.
+- It's bzip2-compressed, and Ventoy can't boot a `.bz2`, so it has to be
+  expanded to a raw `.img` first. Ventoy does boot `.img` files.
+- The archive doesn't declare its expanded size, so the script streams the
+  download straight through the decompressor and watches free space, aborting
+  cleanly instead of filling the drive.
+- Valve publishes no checksum for it, so unlike everything else here there's
+  nothing to verify it against. The script at least checks the result is a
+  plausible size and carries an `0x55AA` boot signature.
+
+If it won't boot from the Ventoy menu, that's the expected failure mode for a
+Deck-oriented disk image — flash it to its own stick instead.
 
 ## Notes on specific images
 

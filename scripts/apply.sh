@@ -102,6 +102,9 @@ rules = [
     ("Win11",       "windows"),   ("windows",   "windows"),  ("AnduinOS",  "anduinos"),
     ("pearOS",      "pearos"),    ("Nyarch",    "nyarch"),   ("veloguard", "veloguard"),
     ("Bliss",       "android"),   ("ATV",       "android"),
+    ("cachyos",     "cachyos"),   ("PikaOS",    "pikaos"),
+    ("SteamOS",     "steamos"),   ("steamdeck", "steamos"),
+    ("bazzite",     "bazzite"),
 ]
 
 existing = d.get("menu_class", [])

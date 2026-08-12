@@ -37,16 +37,17 @@ def font(path, size):
 # Menu entries: (label, icon class). TreeMode shows directories as browsable
 # submenus, so the top level is folders — this mirrors that.
 ENTRIES = [
-    ("easy for begginers/", "dir"),
-    ("for metsure linux users/", "dir"),
+    ("easy for beginners/", "dir"),
+    ("for mature linux users/", "dir"),
+    ("gaming focused distros/", "dir"),
     ("security focused distros/", "dir"),
     ("server focused distros/", "dir"),
     ("Strange distros/", "dir"),
     ("the trio of linux/", "dir"),
-    ("vonarability search focused distros/", "dir"),
+    ("vulnerability search focused distros/", "dir"),
     ("Win11_25H2_English_x64_v2.iso", "windows"),
 ]
-SELECTED = 5
+SELECTED = 2
 
 if len(sys.argv) > 3 and os.path.isfile(sys.argv[3]):
     ENTRIES = []

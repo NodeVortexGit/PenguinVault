@@ -217,6 +217,42 @@ def chrome_o(d, col=INK):
     d.ellipse([C - rr, C - rr, C + rr, C + rr], fill=col)
 
 
+def chevrons(d, col=INK):
+    """Speed chevrons — CachyOS, the performance-tuned Arch."""
+    w = int(S * SS * 0.075)
+    for off in (-0.16, 0.06):
+        d.line([C - S * SS * 0.06 + S * SS * off, C - S * SS * 0.22,
+                C + S * SS * 0.14 + S * SS * off, C], fill=col, width=w)
+        d.line([C + S * SS * 0.14 + S * SS * off, C,
+                C - S * SS * 0.06 + S * SS * off, C + S * SS * 0.22], fill=col, width=w)
+
+
+def bolt(d, col=INK):
+    """Lightning bolt — PikaOS."""
+    s = S * SS
+    d.polygon([(C + s * 0.06, C - s * 0.30), (C - s * 0.18, C + s * 0.04),
+               (C - s * 0.01, C + s * 0.04), (C - s * 0.06, C + s * 0.30),
+               (C + s * 0.19, C - s * 0.06), (C + s * 0.01, C - s * 0.06)], fill=col)
+
+
+def valve_gear(d, col=INK):
+    """Ring with a piston bar — SteamOS."""
+    r = S * SS * 0.24
+    d.ellipse([C - r, C - r, C + r, C + r], outline=col, width=int(S * SS * 0.075))
+    d.line([C - r * 1.5, C, C - r * 0.6, C], fill=col, width=int(S * SS * 0.075))
+    d.line([C + r * 0.6, C, C + r * 1.5, C], fill=col, width=int(S * SS * 0.075))
+
+
+def crystal(d, col=INK):
+    """Faceted gem — bazzite is a mineral."""
+    s = S * SS * 0.28
+    d.polygon([(C, C - s), (C + s * 0.86, C - s * 0.30), (C + s * 0.54, C + s * 0.82),
+               (C - s * 0.54, C + s * 0.82), (C - s * 0.86, C - s * 0.30)], fill=col)
+    d.line([(C - s * 0.86, C - s * 0.30), (C + s * 0.86, C - s * 0.30)],
+           fill=(20, 20, 28, 160), width=int(S * SS * 0.035))
+    d.line([(C, C - s), (C, C + s * 0.82)], fill=(20, 20, 28, 120), width=int(S * SS * 0.03))
+
+
 def vault_lock(d, col=INK):
     r = S * SS * 0.26
     d.ellipse([C - r, C - r, C + r, C + r], outline=col, width=int(S * SS * 0.07))
@@ -251,6 +287,12 @@ ICONS = {
     "nyarch":        ((203, 116, 190), cat_ears),
     "veloguard":     ((45, 106, 120),  shield),
     "security":      ((45, 106, 120),  shield),
+    # gaming
+    "cachyos":       ((22, 137, 96),   chevrons),
+    "pikaos":        ((242, 190, 34),  bolt),
+    "steamos":       ((27, 40, 56),    valve_gear),
+    "bazzite":       ((124, 77, 196),  crystal),
+    "gaming":        ((88, 61, 148),   crystal),
     # Tux tiles are light so the black body reads; the rest stay dark.
     "linux":         ((226, 234, 241), penguin),
     "vtoyret":       ((38, 52, 70),    circle_o),

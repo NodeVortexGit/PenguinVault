@@ -53,6 +53,10 @@ kali-linux-|2026.2|https://cdimage.kali.org/kali-2026.2/kali-linux-2026.2-instal
 AnduinOS-|2.0.1|https://www.anduinos.com/|2.x is torrent/website-only, no direct ISO to fetch|
 TinyCore|17.1|http://www.tinycorelinux.net/17.x/x86/release/|CorePlus edition; filename carries no version|
 Win11_|25H2|https://www.microsoft.com/software-download/windows11|26H2 not public yet|
+cachyos-|260809|https://mirror.cachyos.org/ISO/desktop/260809/cachyos-desktop-linux-260809.iso|rolling Arch base, dated snapshots|cachyos-desktop-linux-([0-9]{6})
+PikaOS-|26.04.04|https://iso.pika-os.com/PikaOS-Nest-KDE-4.0-amd64-v3-26.04.04-1.iso|Nest 4.0, KDE, non-NVIDIA|v3-([0-9]+\.[0-9]+\.[0-9]+)
+bazzite-|stable|https://download.bazzite.gg/bazzite-stable-amd64.iso|rolling "stable" tag, AMD/Intel image|(stable)
+SteamOS|rolling|https://store.steampowered.com/steamos/download/|Valve ships a rolling recovery image, no version in filename|
 chromeos_|rolling|https://cros.tech/|reven builds roll continuously|
 athenaos-|rolling||rolling release, filename carries no version|
 pearOS-|unknown||community spin, no published version feed|
