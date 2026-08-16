@@ -134,27 +134,40 @@ layered on after install if you need them.
 | CachyOS | `cachyos-desktop-linux-*.iso` | Performance-tuned Arch; dated snapshots, SHA256 published |
 | PikaOS | `PikaOS-Nest-KDE-*-amd64-*.iso` | Nest 4.0, KDE, the non-NVIDIA build |
 | Bazzite | `bazzite-stable-amd64.iso` | Fedora Atomic; the plain AMD/Intel KDE image, not `-nvidia` |
-| SteamOS | `SteamOS.img` | See below — not an ISO |
+### SteamOS doesn't work here, and can't be made to
 
-`scripts/fetch-steamos.sh` exists because SteamOS is genuinely awkward:
+Tested and removed. Worth writing down so nobody burns an evening on it:
 
-- Valve publishes no ISO. The download is a raw disk image,
-  `steamdeck-repair-latest.img.bz2`, meant to be flashed with Rufus/Etcher.
-  Since **SteamOS 3.8** (June 2026) that same image also installs on generic
-  PCs, provided you have an **AMD GPU** — NVIDIA support is slated for 2027.
-- It's bzip2-compressed, and Ventoy can't boot a `.bz2`, so it has to be
-  expanded to a raw `.img` first. Ventoy does boot `.img` files.
-- The archive doesn't declare its expanded size, so the script streams the
-  download straight through the decompressor and watches free space, aborting
-  cleanly instead of filling the drive.
-- Valve publishes no checksum for it, so unlike everything else here there's
-  nothing to verify it against. The script at least checks the result is a
-  plausible size and carries an `0x55AA` boot signature.
+Valve publishes no SteamOS ISO — the download is
+`steamdeck-repair-latest.img.bz2`, a **raw GPT disk image with five
+partitions** (EFI System, Microsoft basic data, Linux root, var, home). Ventoy
+boots it as a raw image and it fails.
 
-If it won't boot from the Ventoy menu, that's the expected failure mode for a
-Deck-oriented disk image — flash it to its own stick instead.
+**No "img to iso converter" can fix that.** An ISO is a single ISO9660
+filesystem plus an El Torito boot catalog; that image is an entire
+partitioned disk whose bootloader references partitions by GUID. Converters
+either rename the file — a no-op — or repack its *files* into ISO9660, which
+discards the partition table and the boot chain and yields a non-bootable
+ISO. The information simply doesn't survive the conversion. Producing a
+bootable SteamOS ISO would mean rebuilding it as a live image, which is a
+distro build process Valve doesn't publish.
+
+**ChimeraOS is no help either** — it ships `.img.tar.xz`, the same raw-disk
+format.
+
+If you want the SteamOS experience on a Ventoy drive, the working option is
+**`bazzite-deck-stable-amd64.iso`** — a real bootable ISO that comes up in the
+gamescope / Steam Big Picture session, unlike the `bazzite-stable` desktop
+image in the table above. Otherwise, flash Valve's `.img` to its own stick
+with Rufus or Etcher.
 
 ## Notes on specific images
+
+- **OPNsense** — grab the **`-dvd-amd64.iso`**, not the `-vga-amd64.img`.
+  The `vga`/`serial`/`nano` variants are raw disk images for `dd`/Rufus onto
+  a dedicated stick and won't boot from Ventoy; only the `dvd` build is a
+  real ISO. Same trap as SteamOS above. Both ship bzip2-compressed, and
+  OPNsense publishes SHA256 sums for every variant.
 
 - **VeloGuardOS** — **not recommended as a daily driver.** It's full of bugs,
   and its creator is on vacation, so don't expect fixes in the near term.

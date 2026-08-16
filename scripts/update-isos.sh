@@ -47,6 +47,7 @@ nixos-|26.05|https://channels.nixos.org/nixos-26.05/latest-nixos-graphical-x86_6
 pop-os_|24.04|https://system76.com/pop/download|COSMIC Epoch 1, Dec 2025|
 Qubes-|R4.3.1|https://www.qubes-os.org/downloads/|June 2026|
 proxmox-ve_|9.2|https://www.proxmox.com/en/downloads|May 2026|
+OPNsense-|26.7|https://opnsense.c0urier.net/releases/26.7/OPNsense-26.7-dvd-amd64.iso.bz2|use the dvd ISO, not the vga .img|OPNsense-([0-9]+\.[0-9]+)-
 void-live-|20250202|https://repo-default.voidlinux.org/live/current/|newest live image upstream ships|
 blackarch-linux-full-|2023.04.01|https://blackarch.org/downloads.html|upstream has cut no newer full ISO|
 kali-linux-|2026.2|https://cdimage.kali.org/kali-2026.2/kali-linux-2026.2-installer-amd64.iso|quarterly|
@@ -56,7 +57,6 @@ Win11_|25H2|https://www.microsoft.com/software-download/windows11|26H2 not publi
 cachyos-|260809|https://mirror.cachyos.org/ISO/desktop/260809/cachyos-desktop-linux-260809.iso|rolling Arch base, dated snapshots|cachyos-desktop-linux-([0-9]{6})
 PikaOS-|26.04.04|https://iso.pika-os.com/PikaOS-Nest-KDE-4.0-amd64-v3-26.04.04-1.iso|Nest 4.0, KDE, non-NVIDIA|v3-([0-9]+\.[0-9]+\.[0-9]+)
 bazzite-|stable|https://download.bazzite.gg/bazzite-stable-amd64.iso|rolling "stable" tag, AMD/Intel image|(stable)
-SteamOS|rolling|https://store.steampowered.com/steamos/download/|Valve ships a rolling recovery image, no version in filename|
 chromeos_|rolling|https://cros.tech/|reven builds roll continuously|
 athenaos-|rolling||rolling release, filename carries no version|
 pearOS-|unknown||community spin, no published version feed|
