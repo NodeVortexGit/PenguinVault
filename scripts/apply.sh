@@ -100,6 +100,7 @@ rules = [
     ("pop-os",      "popos"),     ("qubes",     "qubes"),    ("proxmox",   "proxmox"),
     ("void-live",   "void"),      ("chromeos",  "chromeos"), ("tinycore",  "tinycore"),
     ("Win11",       "windows"),   ("windows",   "windows"),  ("AnduinOS",  "anduinos"),
+    ("omarchy",     "arch"),      ("ipfire",     "security"),
     ("pearOS",      "pearos"),    ("Nyarch",    "nyarch"),   ("veloguard", "veloguard"),
     ("Bliss",       "android"),   ("ATV",       "android"),
     ("cachyos",     "cachyos"),   ("PikaOS",    "pikaos"),

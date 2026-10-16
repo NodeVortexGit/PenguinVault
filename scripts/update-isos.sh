@@ -15,7 +15,7 @@
 
 set -euo pipefail
 
-MANIFEST_DATE="2026-08-12"
+MANIFEST_DATE="2026-10-16"
 
 MP="${1:-}"
 MODE="${2:-audit}"
@@ -41,7 +41,7 @@ read -r -d '' MANIFEST <<'EOF' || true
 archlinux-|2026.08.01|https://geo.mirror.pkgbuild.com/iso/2026.08.01/archlinux-2026.08.01-x86_64.iso|monthly snapshot|
 debian-|13.6.0|https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.6.0-amd64-netinst.iso|stable point release|
 Fedora-Workstation|44|https://download.fedoraproject.org/pub/fedora/linux/releases/44/Workstation/x86_64/iso/|next is 45, ~Oct 2026|Live-([0-9]+)
-ubuntu-|26.04|https://releases.ubuntu.com/26.04/|26.04.1 slipped to ~27 Aug 2026|
+ubuntu-|26.04|https://releases.ubuntu.com/26.04/|26.04.1 released 27 Aug 2026|
 linuxmint-|22.3|https://linuxmint.com/download.php|22.3 Zena; Mint 23 due Christmas 2026|
 nixos-|26.05|https://channels.nixos.org/nixos-26.05/latest-nixos-graphical-x86_64-linux.iso|Yarara, May 2026|nixos-[a-z]+-([0-9]+\.[0-9]+)
 pop-os_|24.04|https://system76.com/pop/download|COSMIC Epoch 1, Dec 2025|
@@ -54,8 +54,11 @@ kali-linux-|2026.2|https://cdimage.kali.org/kali-2026.2/kali-linux-2026.2-instal
 AnduinOS-|2.0.1|https://www.anduinos.com/|2.x is torrent/website-only, no direct ISO to fetch|
 TinyCore|17.1|http://www.tinycorelinux.net/17.x/x86/release/|CorePlus edition; filename carries no version|
 Win11_|25H2|https://www.microsoft.com/software-download/windows11|26H2 not public yet|
+Windows10.iso|unknown||generic Windows 10 image name does not identify a release|
 cachyos-|260809|https://mirror.cachyos.org/ISO/desktop/260809/cachyos-desktop-linux-260809.iso|rolling Arch base, dated snapshots|cachyos-desktop-linux-([0-9]{6})
 PikaOS-|26.04.04|https://iso.pika-os.com/PikaOS-Nest-KDE-4.0-amd64-v3-26.04.04-1.iso|Nest 4.0, KDE, non-NVIDIA|v3-([0-9]+\.[0-9]+\.[0-9]+)
+omarchy-|4.0.0|https://omarchy.org/|Omarchy 4.0.0 image; check upstream manually|omarchy-([0-9]+\.[0-9]+\.[0-9]+)
+ipfire-|2.29-core204|https://www.ipfire.org/downloads|IPFire 2.29 Core 204; check upstream manually|ipfire-([0-9]+\.[0-9]+-core[0-9]+)
 bazzite-|stable|https://download.bazzite.gg/bazzite-stable-amd64.iso|rolling "stable" tag, AMD/Intel image|(stable)
 chromeos_|rolling|https://cros.tech/|reven builds roll continuously|
 athenaos-|rolling||rolling release, filename carries no version|

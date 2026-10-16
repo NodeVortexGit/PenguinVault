@@ -163,6 +163,16 @@ with Rufus or Etcher.
 
 ## Notes on specific images
 
+- **Omarchy** — the drive's `omarchy-4.0.0.iso` is recognised by the audit
+  script and uses the Arch icon. Its release page is checked manually because
+  it does not provide a stable direct ISO URL for unattended updates.
+- **IPFire** — `ipfire-2.29-core204-x86_64.iso` is recognised by the audit
+  script and uses the security icon. Check the downloads page manually before
+  replacing it.
+- **Windows 10** — the generic `Windows10.iso` filename cannot identify its
+  release, so the audit reports it as unverifiable. Rename it to include its
+  release if you want version tracking.
+
 - **OPNsense** — grab the **`-dvd-amd64.iso`**, not the `-vga-amd64.img`.
   The `vga`/`serial`/`nano` variants are raw disk images for `dd`/Rufus onto
   a dedicated stick and won't boot from Ventoy; only the `dvd` build is a
