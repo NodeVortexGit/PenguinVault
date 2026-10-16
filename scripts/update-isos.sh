@@ -41,7 +41,9 @@ read -r -d '' MANIFEST <<'EOF' || true
 archlinux-|2026.08.01|https://geo.mirror.pkgbuild.com/iso/2026.08.01/archlinux-2026.08.01-x86_64.iso|monthly snapshot|
 debian-|13.6.0|https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.6.0-amd64-netinst.iso|stable point release|
 Fedora-Workstation|44|https://download.fedoraproject.org/pub/fedora/linux/releases/44/Workstation/x86_64/iso/|next is 45, ~Oct 2026|Live-([0-9]+)
-ubuntu-|26.04|https://releases.ubuntu.com/26.04/|26.04.1 released 27 Aug 2026|
+ubuntu-26.04.1-desktop-|26.04.1|https://releases.ubuntu.com/26.04/ubuntu-26.04.1-desktop-amd64.iso|Ubuntu 26.04.1 desktop image|
+ubuntu-26.04.1-live-server-|26.04.1|https://releases.ubuntu.com/26.04/ubuntu-26.04.1-live-server-amd64.iso|Ubuntu 26.04.1 server image|
+ubuntu-|26.04.1|https://releases.ubuntu.com/26.04/|Ubuntu 26.04.1 released 27 Aug 2026; edition-specific ISO names are required for automatic updates|
 linuxmint-|22.3|https://linuxmint.com/download.php|22.3 Zena; Mint 23 due Christmas 2026|
 nixos-|26.05|https://channels.nixos.org/nixos-26.05/latest-nixos-graphical-x86_64-linux.iso|Yarara, May 2026|nixos-[a-z]+-([0-9]+\.[0-9]+)
 pop-os_|24.04|https://system76.com/pop/download|COSMIC Epoch 1, Dec 2025|
